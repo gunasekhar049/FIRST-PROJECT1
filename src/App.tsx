@@ -1,11 +1,32 @@
-import React from 'react';
-import logo from './logo.svg';
+import React, { useState } from 'react';
 import './App.css';
+import InputField from './Components/InputField';
+import { Todo } from './model';
+import TodoList from './Components/TodoList';
 
-function App() {
+const App: React.FC = () => {
+  const [todo, setTodo ] = useState<string>("");
+  const [todos, setTodos ] = useState<Todo[]>([]);
+  const handleAdd =  (e: React.FormEvent) => {
+    e.preventDefault();
+
+    if (todo) {
+      setTodos ([...todos,{id:Date.now(),todo:todo,isDone:false}]);
+      setTodo("");
+    }
+  };
+  console.log(todos);
+
   return (
-   <h1 className='color'>First Project</h1>
-  );
+    <div className="App">
+      <span className="heading">Tasks</span>
+      <InputField todo = {todo} setTodo = {setTodo} handleAdd={handleAdd}></InputField>
+      <TodoList todos={todos} setTodos={setTodos}/>
+      {todos.map((t)=> (
+      <li>{t.todo}</li>
+      ))}
+    </div>
+  )
 }
 
 export default App;
